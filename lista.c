@@ -41,18 +41,68 @@ void Imprime(TipoLista Lista) {
 }
 
 void RetiraUltimo(TipoLista *Lista, TipoItem *Item) {
+    if (Vazia(*Lista)) {
+        printf("Erro: lista vazia\n");
+        return;
+    }
+
+    TipoApontador ant = Lista->Primeiro;
+    TipoApontador atual = Lista->Primeiro->Prox;
+    while (atual->Prox != NULL) {
+        ant = atual;
+        atual = atual->Prox;
+    }
+
+    *Item = atual->Item;
+    ant->Prox = NULL;
+    Lista->Ultimo = ant;
+
+    free(atual);
+
     /* IMPLEMENTAR */
 }
 
 void InsereInicio(TipoItem x, TipoLista *Lista) {
+    TipoApontador nova = (TipoApontador) malloc(sizeof(TipoCelula));
+
+    nova->Item = x;
+    nova->Prox = Lista->Primeiro->Prox;
+    Lista->Primeiro->Prox = nova;
+    if (Lista->Ultimo == Lista->Primeiro) {
+        Lista->Ultimo = nova;
+    }
     /* IMPLEMENTAR */
 }
 
 void Inverte(TipoLista *Lista) {
+    if (Vazia(*Lista)) return;
+
+    TipoApontador prev = NULL;
+    TipoApontador current = Lista->Primeiro->Prox;
+    TipoApontador next;
+
+    Lista->Ultimo = current;
+
+    while (current != NULL) {
+        next = current->Prox;
+        current->Prox = prev;
+        prev = current;
+        current = next;
+    }
+
+    Lista->Primeiro->Prox = prev;
+
     /* IMPLEMENTAR */
 }
 
 int Tamanho(TipoLista *Lista) {
+    int count = 0;
+    TipoApontador aux = Lista->Primeiro->Prox;
+
+    while (aux != NULL) {
+        count++;
+        aux = aux->Prox;
+    }
     /* IMPLEMENTAR */
-    return XXX;
+    return count;
 }
